@@ -265,27 +265,9 @@ where
                     );
                 }
                 #[cfg(feature = "remote")]
-                Link::Remote(notified_actor_remote_id) => {
-                    if let Some(swarm) = remote::ActorSwarm::get() {
-                        let reason = reason.clone();
-                        link_notification_futures.push(
-                            async move {
-                                let res = swarm
-                                    .signal_link_died(
-                                        id,
-                                        link_actor_id,
-                                        notified_actor_remote_id,
-                                        reason,
-                                    )
-                                    .await;
-                                if let Err(err) = res {
-                                    #[cfg(feature = "tracing")]
-                                    error!("failed to notify actor a link died: {err}");
-                                }
-                            }
-                            .boxed(),
-                        );
-                    }
+                Link::Remote(_notified_actor_remote_id) => {
+                    // TODO: Implement remote link notification without ActorSwarm
+                    // This functionality will be added back when remote links are reimplemented
                 }
             }
         }
@@ -297,8 +279,8 @@ where
     while let Some(()) = link_notification_futures.next().await {}
     #[cfg(not(feature = "remote"))]
     crate::registry::ACTOR_REGISTRY.lock().unwrap().remove(name);
-    #[cfg(feature = "remote")]
-    remote::REMOTE_REGISTRY.lock().await.remove(&id);
+    // #[cfg(feature = "remote")]
+    // remote::REMOTE_REGISTRY.lock().await.remove(&id);
 
     match on_stop_res {
         Ok(()) => {
