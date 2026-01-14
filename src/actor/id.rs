@@ -1,7 +1,5 @@
 use std::error;
 use std::hash::Hash;
-#[cfg(feature = "remote")]
-use std::hash::Hasher;
 use std::sync::atomic::Ordering;
 use std::{fmt, sync::atomic::AtomicUsize};
 
@@ -9,7 +7,6 @@ use std::{fmt, sync::atomic::AtomicUsize};
 
 #[cfg(feature = "remote")]
 use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
-
 
 static ACTOR_COUNTER: AtomicUsize = AtomicUsize::new(0);
 
@@ -23,6 +20,7 @@ pub type ActorID = ActorId;
 /// to uniquely identify actors across a distributed network.
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[cfg_attr(feature = "remote", derive(Archive, RkyvSerialize, RkyvDeserialize))]
+#[cfg_attr(feature = "remote", rkyv(derive(Debug)))]
 pub struct ActorId {
     sequence_id: u64,
 }
@@ -41,9 +39,7 @@ impl ActorId {
     ///
     /// A new `ActorId` instance.
     pub fn new(sequence_id: u64) -> Self {
-        ActorId {
-            sequence_id,
-        }
+        ActorId { sequence_id }
     }
 
     /// Creates a new `ActorId` with a specific `sequence_id` and `peer_id`.
@@ -58,9 +54,7 @@ impl ActorId {
     /// A new `ActorId` instance.
     #[cfg(feature = "remote")]
     pub fn new_with_peer_id(sequence_id: u64, _peer_id: String) -> Self {
-        ActorId {
-            sequence_id,
-        }
+        ActorId { sequence_id }
     }
 
     /// Generates a new `ActorId` with an automatically incremented `sequence_id`.
@@ -90,13 +84,13 @@ impl ActorId {
     pub fn sequence_id(&self) -> u64 {
         self.sequence_id
     }
-    
+
     /// Convert ActorId to u64 for kameo_remote compatibility
     #[cfg(feature = "remote")]
     pub fn into_u64(self) -> u64 {
         self.sequence_id
     }
-    
+
     /// Create ActorId from u64 for kameo_remote compatibility
     #[cfg(feature = "remote")]
     pub fn from_u64(id: u64) -> Self {
@@ -137,16 +131,14 @@ impl ActorId {
         if bytes.len() < 8 {
             return Err(ActorIdFromBytesError::MissingSequenceID);
         }
-        
+
         let sequence_id = u64::from_le_bytes(
             bytes[0..8]
                 .try_into()
                 .map_err(|_| ActorIdFromBytesError::MissingSequenceID)?,
         );
 
-        Ok(ActorId {
-            sequence_id,
-        })
+        Ok(ActorId { sequence_id })
     }
 }
 
@@ -171,7 +163,6 @@ pub enum ActorIdFromBytesError {
     MissingSequenceID,
 }
 
-
 impl fmt::Display for ActorIdFromBytesError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -182,34 +173,22 @@ impl fmt::Display for ActorIdFromBytesError {
 
 impl error::Error for ActorIdFromBytesError {}
 
-
 #[cfg(test)]
 mod tests {
     use std::hash::{DefaultHasher, Hasher};
 
-
     use super::*;
-
 
     #[test]
     fn test_actor_id_partial_eq_local() {
-        let id1 = ActorId {
-            sequence_id: 0,
-        };
-        let id2 = ActorId {
-            sequence_id: 0,
-        };
+        let id1 = ActorId { sequence_id: 0 };
+        let id2 = ActorId { sequence_id: 0 };
         assert_eq!(id1, id2);
 
-        let id1 = ActorId {
-            sequence_id: 0,
-        };
-        let id2 = ActorId {
-            sequence_id: 1,
-        };
+        let id1 = ActorId { sequence_id: 0 };
+        let id2 = ActorId { sequence_id: 1 };
         assert_ne!(id1, id2);
     }
-
 
     fn hashes_eq(id1: &ActorId, id2: &ActorId) -> bool {
         let mut hasher = DefaultHasher::new();
@@ -225,23 +204,14 @@ mod tests {
 
     #[test]
     fn test_actor_id_hash_local() {
-        let id1 = ActorId {
-            sequence_id: 0,
-        };
-        let id2 = ActorId {
-            sequence_id: 0,
-        };
+        let id1 = ActorId { sequence_id: 0 };
+        let id2 = ActorId { sequence_id: 0 };
 
         assert!(hashes_eq(&id1, &id2));
 
-        let id1 = ActorId {
-            sequence_id: 0,
-        };
-        let id2 = ActorId {
-            sequence_id: 1,
-        };
+        let id1 = ActorId { sequence_id: 0 };
+        let id2 = ActorId { sequence_id: 1 };
 
         assert!(!hashes_eq(&id1, &id2));
     }
-
 }

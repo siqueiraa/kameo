@@ -251,14 +251,12 @@ where
             }
             None => {
                 let msg = message.clone();
-                let res = actor_ref
-                    .tell(message)
-                    .send()
-                    .await;
+                let res = actor_ref.tell(message).send().await;
                 match res {
                     Ok(()) => ForwardedReply::new(Ok(())),
                     Err(err) => {
-                        let send_err: SendError<M, <B::Reply as Reply>::Error> = err.map_msg(|_| msg.clone()).reset_err_infallible();
+                        let send_err: SendError<M, <B::Reply as Reply>::Error> =
+                            err.map_msg(|_| msg.clone()).reset_err_infallible();
                         ForwardedReply::new(Err(send_err))
                     }
                 }
@@ -292,13 +290,12 @@ where
             }
             None => {
                 let msg = message.clone();
-                let res = actor_ref
-                    .tell(message)
-                    .try_send();
+                let res = actor_ref.tell(message).try_send();
                 match res {
                     Ok(()) => ForwardedReply::new(Ok(())),
                     Err(err) => {
-                        let send_err: SendError<M, <B::Reply as Reply>::Error> = err.map_msg(|_| msg.clone()).reset_err_infallible();
+                        let send_err: SendError<M, <B::Reply as Reply>::Error> =
+                            err.map_msg(|_| msg.clone()).reset_err_infallible();
                         ForwardedReply::new(Err(send_err))
                     }
                 }
@@ -333,13 +330,12 @@ where
             }
             None => {
                 let msg = message.clone();
-                let res = actor_ref
-                    .tell(message)
-                    .blocking_send();
+                let res = actor_ref.tell(message).blocking_send();
                 match res {
                     Ok(()) => ForwardedReply::new(Ok(())),
                     Err(err) => {
-                        let send_err: SendError<M, <B::Reply as Reply>::Error> = err.map_msg(|_| msg.clone()).reset_err_infallible();
+                        let send_err: SendError<M, <B::Reply as Reply>::Error> =
+                            err.map_msg(|_| msg.clone()).reset_err_infallible();
                         ForwardedReply::new(Err(send_err))
                     }
                 }
