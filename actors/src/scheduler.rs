@@ -30,11 +30,11 @@
 //!
 //! # tokio_test::block_on(async {
 //! // Spawn a scheduler actor
-//! let scheduler_ref = Scheduler::spawn(Scheduler::new());
+//! let scheduler_ref = <Scheduler as Actor>::spawn(Scheduler::new());
 //!
 //! // Spawn a counter actor
 //! let counter = Arc::new(AtomicU64::new(0));
-//! let counter_ref = Counter::spawn(Counter(counter.clone()));
+//! let counter_ref = <Counter as Actor>::spawn(Counter(counter.clone()));
 //!
 //! // Increment counter every 100ms
 //! let interval = SetInterval::new(counter_ref.downgrade(), Duration::from_millis(100), Inc);

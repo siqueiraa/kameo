@@ -41,7 +41,7 @@
 //! # tokio_test::block_on(async {
 //! // Create a message queue with best effort delivery
 //! let mq = MessageQueue::new(DeliveryStrategy::BestEffort);
-//! let mq_ref = MessageQueue::spawn(mq);
+//! let mq_ref = <MessageQueue as Actor>::spawn(mq);
 //!
 //! // Set up exchange and queue
 //! mq_ref.tell(ExchangeDeclare {
@@ -61,7 +61,7 @@
 //! }).await?;
 //!
 //! // Register a consumer
-//! let processor = OrderProcessor::spawn(OrderProcessor);
+//! let processor = <OrderProcessor as Actor>::spawn(OrderProcessor);
 //! mq_ref.tell(BasicConsume {
 //!     queue: "order_processing".to_string(),
 //!     recipient: processor.recipient::<OrderEvent>(),

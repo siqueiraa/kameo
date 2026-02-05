@@ -30,7 +30,7 @@
 //!
 //! # tokio_test::block_on(async {
 //! // Spawn the actor pool with 4 workers
-//! let pool_actor = ActorPool::spawn(ActorPool::new(4, || MyWorker::spawn(MyWorker)));
+//! let pool_actor = <ActorPool<_> as Actor>::spawn(ActorPool::new(4, || <MyWorker as Actor>::spawn(MyWorker)));
 //!
 //! // Send tasks to the pool
 //! pool_actor.tell(Dispatch("Hello worker!")).await?;
