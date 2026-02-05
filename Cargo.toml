@@ -65,7 +65,7 @@ bytes = "1.5"
 downcast-rs = "2.0.1"
 dyn-clone = "1.0"
 futures.workspace = true
-kameo_remote = { git = "https://github.com/siqueiraa/kameo_remote", branch = "fix/connection-recovery-shutdown-detection", optional = true }
+kameo_remote = { git = "https://github.com/siqueiraa/kameo_remote", branch = "main", optional = true }
 metrics = { version = "0.24.2", optional = true }
 rkyv = { version = "0.8", features = ["bytecheck", "std"], optional = true }
 thiserror = "2.0"
