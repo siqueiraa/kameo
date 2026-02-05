@@ -279,7 +279,8 @@ where
     ///
     /// Returns the new connection on success, or error if connection fails.
     async fn refresh_connection(&self) -> Result<Arc<ConnectionHandle>, SendError> {
-        let new_conn = self.transport
+        let new_conn = self
+            .transport
             .get_connection_for_location(&self.location)
             .await
             .map_err(|_| SendError::ActorStopped)?;
@@ -292,9 +293,7 @@ where
     fn is_connection_error(err: &GossipError) -> bool {
         matches!(
             err,
-            GossipError::Network(_)
-                | GossipError::PeerNotFound(_)
-                | GossipError::Shutdown
+            GossipError::Network(_) | GossipError::PeerNotFound(_) | GossipError::Shutdown
         )
     }
 }
@@ -456,7 +455,8 @@ where
 
         // No connection - try to establish one
         match self.actor_ref.refresh_connection().await {
-            Ok(conn) => self.try_send_payload(&conn, type_hash, &payload)
+            Ok(conn) => self
+                .try_send_payload(&conn, type_hash, &payload)
                 .await
                 .map_err(|_| SendError::ActorStopped),
             Err(e) => Err(e),

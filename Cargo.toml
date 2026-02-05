@@ -122,33 +122,8 @@ path = "examples/distributed_registration_test_server.rs"
 required-features = ["remote"]
 
 [[example]]
-name = "test_list_client"
-path = "examples/test_list_client.rs"
-required-features = ["remote"]
-
-[[example]]
-name = "test_list_server"
-path = "examples/test_list_server.rs"
-required-features = ["remote"]
-
-[[example]]
-name = "test_mapping_client"
-path = "examples/test_mapping_client.rs"
-required-features = ["remote"]
-
-[[example]]
-name = "test_mapping_server"
-path = "examples/test_mapping_server.rs"
-required-features = ["remote"]
-
-[[example]]
 name = "ask_concrete_client"
 path = "examples/remote/ask_concrete_client.rs"
-required-features = ["remote"]
-
-[[example]]
-name = "ask_concrete_client_zerocopy"
-path = "examples/remote/ask_concrete_client_zerocopy.rs"
 required-features = ["remote"]
 
 [[example]]
@@ -217,16 +192,6 @@ path = "examples/remote/tell_messages.rs"
 required-features = ["remote"]
 
 [[example]]
-name = "test_large_only"
-path = "examples/remote/test_large_only.rs"
-required-features = ["remote"]
-
-[[example]]
-name = "simple_prebacktest_server"
-path = "examples/remote/simple_prebacktest_server.rs"
-required-features = ["remote"]
-
-[[example]]
 name = "ask_server_simple_match"
 path = "examples/remote/ask_server_simple_match.rs"
 required-features = ["remote"]
@@ -235,11 +200,6 @@ required-features = ["remote"]
 name = "ask_client_simple_match"
 path = "examples/remote/ask_client_simple_match.rs"
 required-features = ["remote"]
-
-[[example]]
-name = "prometheus_metrics"
-path = "examples/prometheus_metrics.rs"
-required-features = ["metrics"]
 
 [[bench]]
 name = "overhead"
