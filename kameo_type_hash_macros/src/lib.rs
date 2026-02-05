@@ -14,7 +14,9 @@ use syn::{parse_macro_input, DeriveInput, GenericParam, Type};
 ///
 /// # Example
 ///
-/// ```rust
+/// ```rust,ignore
+/// use kameo_type_hash_macros::TypeHash;
+///
 /// #[derive(TypeHash)]
 /// struct MyActor {
 ///     // fields...
@@ -70,7 +72,9 @@ pub fn derive_type_hash(input: TokenStream) -> TokenStream {
 ///
 /// # Example
 ///
-/// ```rust
+/// ```rust,ignore
+/// use kameo_type_hash_macros::type_hash;
+///
 /// #[type_hash("MyOldActorName")]
 /// struct MyNewActor {
 ///     // fields...
@@ -102,7 +106,10 @@ pub fn type_hash(args: TokenStream, input: TokenStream) -> TokenStream {
 ///
 /// # Example
 ///
-/// ```rust
+/// ```rust,ignore
+/// use kameo::remote::type_hash::TypeHash;
+/// use kameo_type_hash_macros::type_hash_for;
+///
 /// const CACHE_HASH: TypeHash = type_hash_for!(Cache<String, User>);
 /// ```
 #[proc_macro]
